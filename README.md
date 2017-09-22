@@ -8,6 +8,7 @@ This is GameMode project for Global Event, not gameplay.
 
 
 ### Mappers:
+* None
 
 ### Beta Testers:
 
