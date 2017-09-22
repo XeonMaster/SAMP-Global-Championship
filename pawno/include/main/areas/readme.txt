@@ -1,0 +1,1 @@
+//add here all your event areas programs//Objects -> SAOI Objects\pawn_code (look e.g. LibertyCity.txt)

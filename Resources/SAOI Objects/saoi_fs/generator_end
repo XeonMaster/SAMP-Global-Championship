@@ -1,0 +1,61 @@
+
+
+public OnFilterScriptInit(){
+	printf("Conversion Start");
+	if(fexist(MY_SAOI_FILE)) fremove(MY_SAOI_FILE);
+	CreateSAOIFile(MY_SAOI_FILE,SAOI_AUTHOR,SAOI_VERSION,SAOI_DESCRIPTION);
+	PutObjectHere();
+	
+	new cnt;
+	
+	cnt = 0;
+	for(new i = 1, j = Streamer_GetUpperBound(STREAMER_TYPE_AREA); i <= j; i++){
+		if(IsValidDynamicArea(i)){
+			SaveDynamicArea(i,MY_SAOI_FILE);
+			cnt++;
+		}
+	}
+	printf("Areas converted: %d",cnt);
+
+	cnt = 0;
+	for(new i = 1, j = Streamer_GetUpperBound(STREAMER_TYPE_OBJECT); i <= j; i++){
+		if(IsValidDynamicObject(i)){
+			SaveDynamicObject(i,MY_SAOI_FILE);
+			cnt++;
+		}
+	}
+	printf("Objects converted: %d",cnt);
+	
+	cnt = 0;
+	for(new i = 1, j = Streamer_GetUpperBound(STREAMER_TYPE_PICKUP); i <= j; i++){
+		if(IsValidDynamicPickup(i)){
+			SaveDynamicPickup(i,MY_SAOI_FILE);
+			cnt++;
+		}
+	}
+	printf("Pickups converted: %d",cnt);
+	
+	cnt = 0;
+	for(new i = 1, j = Streamer_GetUpperBound(STREAMER_TYPE_MAP_ICON); i <= j; i++){
+		if(IsValidDynamicMapIcon(i)){
+			SaveDynamicMapIcon(i,MY_SAOI_FILE);
+			cnt++;
+		}
+	}
+	printf("MapIcons converted: %d",cnt);
+	
+	cnt = 0;
+	for(new i = 1, j = GetVehiclePoolSize(); i <= j; i++){
+		if(IsValidVehicle(i)){
+			SAOI_SaveVehicle(MY_SAOI_FILE,Vehicles[i][Model],Vehicles[i][X],Vehicles[i][Y],Vehicles[i][Z],Vehicles[i][A],Vehicles[i][Color1],Vehicles[i][Color2],Vehicles[i][Respawn],Vehicles[i][Siren],Vehicles[i][VW],Vehicles[i][INT]);
+			cnt++;
+		}
+	}
+	printf("Vehicles converted: %d",cnt);
+	
+	printf("Conversion End");
+	SendRconCommand("exit");
+	return 1;
+}
+
+#pragma dynamic (256*1024)

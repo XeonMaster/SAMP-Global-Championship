@@ -45,3 +45,15 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+gamemodes/championship.amx
+filterscripts/SAOI_FileManager.amx
+scriptfiles/geoip_city.db
+pawno/include/main/meta/version.inc
+server_log.txt
+logs
+SAOI Objects/saoi.log
+fcnpc-crash_*
+scriptfiles/Config/mysql.cfg
+Resources/SAMP Dump File
+Resources/map.txt

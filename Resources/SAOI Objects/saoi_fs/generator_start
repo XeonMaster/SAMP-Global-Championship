@@ -1,0 +1,110 @@
+
+#include <a_samp>
+#include <sscanf2>
+#include <streamer>
+
+#include <SAOI>
+#include <ObjectDist>
+
+//Check Version SAOI.inc
+#if !defined _SAOI_LOADER
+	#error You need SAOI.inc v1.6.1
+#elseif !defined SAOI_LOADER_VERSION
+	#error Update you SAOI.inc to v1.6.1
+#elseif (SAOI_LOADER_VERSION < 10601)
+	#error Update you SAOI.inc to v1.6.1
+#endif
+
+#pragma tabsize 0
+
+enum e_vehicle {
+	Model,
+	Float:X,
+	Float:Y,
+	Float:Z,
+	Float:A,
+	Color1,
+	Color2,
+	Respawn,
+	Siren,
+	VW,
+	INT
+}
+
+new Vehicles[MAX_VEHICLES][e_vehicle];
+
+//Hook: CreateDynamicObject
+stock STREAMER_TAG_OBJECT AC_CreateDynamicObject(modelid,Float:x,Float:y,Float:z,Float:rx,Float:ry,Float:rz,worldid = -1,interiorid = -1,playerid = -1,Float:streamdistance = STREAMER_OBJECT_SD,Float:drawdistance = STREAMER_OBJECT_DD,STREAMER_TAG_AREA areaid = STREAMER_TAG_AREA -1,priority = 0){
+	if(streamdistance == -1) streamdistance = CalculateObjectDistance(modelid);
+	new STREAMER_TAG_OBJECT objectid = CreateDynamicObject(modelid,x,y,z,rx,ry,rz,worldid,interiorid,playerid,streamdistance,drawdistance,areaid,priority);
+	return objectid;
+}
+
+#if defined _ALS_CreateDynamicObject
+	#undef CreateDynamicObject
+#else
+	#define _ALS_CreateDynamicObject
+#endif
+#define CreateDynamicObject AC_CreateDynamicObject
+
+//Hook: RemoveBuildingForPlayer
+stock AC_RemoveBuildingForPlayer(playerid,modelid,Float:x,Float:y,Float:z,Float:radius){
+	#pragma unused playerid
+	SaveRemoveBuilding(MY_SAOI_FILE,modelid,x,y,z,radius);
+}
+
+#if defined _ALS_RemoveBuildingForPlayer
+	#undef RemoveBuildingForPlayer
+#else
+	#define _ALS_RemoveBuildingForPlayer
+#endif
+#define RemoveBuildingForPlayer AC_RemoveBuildingForPlayer
+
+//Hook: LinkVehicleToInterior
+stock SAOI_LinkVehicleToInterior(vehicleid,interiorid){
+	Vehicles[vehicleid][INT] = interiorid;
+}
+
+#if defined _ALS_LinkVehicleToInterior
+	#undef LinkVehicleToInterior
+#else
+	#define _ALS_LinkVehicleToInterior
+#endif
+#define LinkVehicleToInterior SAOI_LinkVehicleToInterior
+
+//Hook: SetVehicleVirtualWorld
+stock SAOI_SetVehicleVirtualWorld(vehicleid,worldid){
+	Vehicles[vehicleid][VW] = worldid;
+}
+
+#if defined _ALS_SetVehicleVirtualWorld
+	#undef SetVehicleVirtualWorld
+#else
+	#define _ALS_SetVehicleVirtualWorld
+#endif
+#define SetVehicleVirtualWorld SAOI_SetVehicleVirtualWorld
+
+//Hook: CreateVehicle
+stock SAOI_CreateVehicle(modelid,Float:x,Float:y,Float:z,Float:angle,color1,color2,respawn_delay,addsiren = 0){
+	new vehicleid = CreateVehicle(modelid,x,y,z,angle,color1,color2,respawn_delay,addsiren);
+	if(vehicleid == INVALID_VEHICLE_ID) return vehicleid;
+	Vehicles[vehicleid][Model] = modelid;
+	Vehicles[vehicleid][X] = x;
+	Vehicles[vehicleid][Y] = y;
+	Vehicles[vehicleid][Z] = z;
+	Vehicles[vehicleid][A] = angle;
+	Vehicles[vehicleid][Color1] = color1;
+	Vehicles[vehicleid][Color2] = color2;
+	Vehicles[vehicleid][Respawn] = respawn_delay;
+	Vehicles[vehicleid][Siren] = addsiren;
+	Vehicles[vehicleid][VW] = 0;
+	Vehicles[vehicleid][INT] = 0;
+	return vehicleid;
+}
+
+#if defined _ALS_CreateVehicle
+	#undef CreateVehicle
+#else
+	#define _ALS_CreateVehicle
+#endif
+#define CreateVehicle SAOI_CreateVehicle
