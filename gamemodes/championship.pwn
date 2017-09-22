@@ -21,6 +21,7 @@
 #include <general/foreach>
 #include <general/colors>
 #include <general/y_timers>
+#include <general/y_hooks>
 
 #include <SAM/StreamerFunction>
 #include <SAM/BitFunctions>
