@@ -15,3 +15,5 @@
 
 #define CONQUEROR_SHIELD		(2500.0)
 
+#define ChampionPublic::%0(%1) hook %0(%1) 
+
