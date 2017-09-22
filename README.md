@@ -5,14 +5,9 @@ This is GameMode project for Global Event, not gameplay.
 
 ### Contributors:
 * Abyss Morgan
-* Crayder
-* Kar
 
 
 ### Mappers:
-* SyncMaster
-* Sitek
-* KacperCK
 
 ### Beta Testers:
 
